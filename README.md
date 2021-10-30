@@ -6,19 +6,17 @@ Test task for Alar Studios
 git clone https://github.com/h1ght1me/alar_studios_test.git
 cd alar_studios_test
 ```
-
+then
 ```
 docker-compose up
 ```
 or
-
 ```
 pip install .
 export FLASK_APP=alar_studios_test.app
 flask run
 ```
 or
-
 ```
 pip install .
 pip install gunicorn
