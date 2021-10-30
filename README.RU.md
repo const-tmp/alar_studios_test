@@ -9,6 +9,27 @@ docker-compose up
 ```
 
 ## Описание
+```
+git clone https://github.com/h1ght1me/alar_studios_test.git
+cd alar_studios_test
+```
+потом
+```
+docker-compose up
+```
+или
+```
+pip install .
+export FLASK_APP=alar_studios_test.app
+flask run
+```
+или
+```
+pip install .
+pip install gunicorn
+gunicorn -b 127.0.0.1:5000 'alar_studios_test.app:create_app()'
+```
+
 Мини приложение для просмотра и редактирования списка пользователей. Реализовано на Flask.
 
 Начальный пользователь в базе username: root password: toor
