@@ -5,7 +5,7 @@ from werkzeug.utils import redirect
 
 from alar_studios_test.app.api.auth import enable_token_auth
 from alar_studios_test.app.cors import enable_cors
-from alar_studios_test.config import PROJECT_PATH
+from alar_studios_test.config import APP_DIR
 from alar_studios_test.db.connection import db_session
 from alar_studios_test.app.auth import bp as auth_bp, login_required
 from alar_studios_test.app.users import bp as users_bp
@@ -16,8 +16,8 @@ def create_app() -> Flask:
     app = Flask(
         __name__,
         static_url_path='/assets',
-        static_folder=str(PROJECT_PATH / 'assets'),
-        template_folder=str(PROJECT_PATH / 'assets/html/templates')
+        static_folder=str(APP_DIR / 'assets'),
+        template_folder=str(APP_DIR / 'assets/html/templates')
     )
 
     app.config.from_mapping(

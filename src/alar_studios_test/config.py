@@ -10,8 +10,7 @@ if DOTENV_FILE.exists():
 else:
     load_dotenv()
 
-CODE_PATH = Path(__file__).parent
-PROJECT_PATH = CODE_PATH.parent.parent
+APP_DIR = Path(__file__).parent
 
 POSTGRES_USER = os.getenv('POSTGRES_USER')
 POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')

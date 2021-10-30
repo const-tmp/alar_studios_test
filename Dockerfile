@@ -12,6 +12,6 @@ COPY . /code/
 
 RUN pip install gunicorn
 
-WORKDIR /code/src
+RUN pip install .
 
 ENTRYPOINT gunicorn -b "0.0.0.0:${APP_PORT}" 'alar_studios_test.app:create_app()'

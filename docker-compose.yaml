@@ -18,7 +18,7 @@ services:
       - "${POSTGRES_PORT}"
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./src/alar_studios_test/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   db-data:
