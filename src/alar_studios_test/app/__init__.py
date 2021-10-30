@@ -3,13 +3,14 @@ import secrets
 from flask import Flask, url_for, g
 from werkzeug.utils import redirect
 
+from alar_studios_test.app.api import bp as api_bp
 from alar_studios_test.app.api.auth import enable_token_auth
+from alar_studios_test.app.auth import bp as auth_bp, login_required
 from alar_studios_test.app.cors import enable_cors
+from alar_studios_test.app.json import bp as json_bp
+from alar_studios_test.app.users import bp as users_bp
 from alar_studios_test.config import APP_DIR
 from alar_studios_test.db.connection import db_session
-from alar_studios_test.app.auth import bp as auth_bp, login_required
-from alar_studios_test.app.users import bp as users_bp
-from alar_studios_test.app.api import bp as api_bp
 
 
 def create_app() -> Flask:
@@ -27,6 +28,7 @@ def create_app() -> Flask:
     app.register_blueprint(auth_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(api_bp)
+    app.register_blueprint(json_bp)
 
     # enable_token_auth(app)    # dummy token auth
     # enable_cors(app)          # dummy CORS support
