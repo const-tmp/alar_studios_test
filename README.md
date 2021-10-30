@@ -5,7 +5,24 @@ Test task for Alar Studios
 ```
 git clone https://github.com/h1ght1me/alar_studios_test.git
 cd alar_studios_test
+```
+
+```
 docker-compose up
+```
+or
+
+```
+pip install .
+export FLASK_APP=alar_studios_test.app
+flask run
+```
+or
+
+```
+pip install .
+pip install gunicorn
+gunicorn -b 127.0.0.1:5000 'alar_studios_test.app:create_app()'
 ```
 
 ## Description
