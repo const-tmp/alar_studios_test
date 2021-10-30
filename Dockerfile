@@ -14,4 +14,4 @@ RUN pip install gunicorn
 
 RUN pip install .
 
-ENTRYPOINT gunicorn -b "0.0.0.0:${APP_PORT}" 'alar_studios_test.app:create_app()'
+ENTRYPOINT gunicorn -w 4 -b "0.0.0.0:${APP_PORT}" 'alar_studios_test.app:create_app()' --preload
