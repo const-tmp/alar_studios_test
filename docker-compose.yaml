@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+  flask:
+    build: .
+    environment:
+      - "APP_PORT=${APP_PORT}"
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    command: bash -c "ls /code && "
+
+  db:
+    image: postgres
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT}"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db-data:

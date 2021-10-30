@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href={{ url_for(
+    'static', filename='css/bootstrap.min.css') }}>
+    {% block styles %}{% endblock %}
+    {% block meta %}{% endblock %}
+
+    <title>{% block title %}{% endblock %} | ALAR</title>
+
+</head>
+<body>
+<div class="container mt-5">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    <ul>
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+</div>
+{% if current_user %}
+<input type="hidden" name="authToken" id="authToken" value="{{ current_user.auth_token }}">
+{% endif %}
+<script src={{ url_for(
+'static', filename='js/bootstrap.bundle.min.js') }}></script>
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

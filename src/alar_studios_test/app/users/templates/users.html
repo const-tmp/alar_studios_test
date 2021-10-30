@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% set user = g.user %}
+
+{% block content %}
+<div class="alerts"></div>
+<!-- createUser Modal -->
+<div class="modal fade" id="createUserModal" tabindex="-1" aria-labelledby="createUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create new user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    <div class="mb-3">
+                        <label for="userNameInput" class="form-label">Name</label>
+                        <input type="text" name="name" class="form-control" id="userNameInput"
+                               placeholder="Username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userPasswordInput" class="form-label">Password</label>
+                        <input type="password" name="password" class="form-control" id="userPasswordInput"
+                               placeholder="Password" required>
+                    </div>
+                    <label for="userPermissionsInput">Permissions</label>
+                    <div class="row" id="userPermissionsInput">
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" name="permissions" value="read" type="checkbox"
+                                       id="readInput" checked disabled>
+                                <label class="form-check-label" for="readInput">Read</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" name="permissions" value="create" type="checkbox"
+                                       id="createInput" {% if not user.permissions.create %} disabled {% endif %}>
+                                <label class="form-check-label" for="createInput">Create</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" name="permissions" value="update" type="checkbox"
+                                       id="updateInput" {% if not user.permissions.update %} disabled {% endif %}>
+                                <label class="form-check-label" for="updateInput">Update</label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" name="permissions" value="delete" type="checkbox"
+                                       id="deleteInput" {% if not user.permissions.delete %} disabled {% endif %}>
+                                <label class="form-check-label" for="deleteInput">Delete</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- deleteUser Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('users.delete') }}" method="post">
+                    <p id="deleteUserMessage"></p>
+                    <input type="hidden" name="user_id" id="deleteUserInput" value="">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Delete">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <h1 class="card-header">
+        Users
+    </h1>
+    <div class="card-body">
+        <div class="card-text">
+            <table class="table table-hover">
+                <tbody>
+                {% for u in users %}
+                <tr id="userRow-{{ u.id }}">
+                    <td id="userName-{{ u.id }}" class="h5">{{ u.name }}</td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="readSwitch"
+                                   {% if u.permissions.read %} checked {% endif %} disabled>
+                            <label class="form-check-label" for="readSwitch">Read</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="createSwitch"
+                                   name="create" data-user-id="{{ u.id }}"
+                                   {% if u.permissions.create %} checked {% endif %}
+                                   {% if not user.permissions.update or user.id == u.id %} disabled {% endif %}>
+                            <label class="form-check-label" for="createSwitch">Create</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="updateSwitch"
+                                   name="update" data-user-id="{{ u.id }}"
+                                   {% if u.permissions.update %} checked {% endif %}
+                                   {% if not user.permissions.update or user.id == u.id %} disabled {% endif %}>
+                            <label class="form-check-label" for="updateSwitch">Update</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="deleteSwitch"
+                                   name="delete" data-user-id="{{ u.id }}"
+                                   {% if u.permissions.delete %} checked {% endif %}
+                                   {% if not user.permissions.update or user.id == u.id %} disabled {% endif %}>
+                            <label class="form-check-label" for="deleteSwitch">Delete</label>
+                        </div>
+                    </td>
+                    <td>
+                        <button type="button" id="deleteUser-{{ u.id }}" class="btn-close" data-bs-toggle="modal"
+                                data-bs-target="#deleteUserModal" aria-label="Close"
+                                onclick="deleteUser({{ u.id }})"
+                                {% if not user.permissions.delete or user.id == u.id %} disabled {% endif %}></button>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% if user.permissions.create %}
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="row text-center">
+            <div class="col">
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#createUserModal">Create new user
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src={{ url_for('static', filename='js/users.js') }}></script>
+{% endblock %}
