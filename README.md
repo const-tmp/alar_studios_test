@@ -11,6 +11,8 @@ docker-compose up
 ## Description
 Mini app for viewing and editing list of users. Implemented with Flask.
 
+Iitial username: root password: toor
+
 Every user has permissions for read/create/update/delete. Every user can read.
 
 User can't create or set permissions that he hasn't. User can't edit his own permissions.
@@ -23,3 +25,4 @@ Cookie and Token authentication. Token auth is dummy for using less imports.
 - JWT Auth
 - Validation
 - Pagination
+- .env file shouldn't be in VC
