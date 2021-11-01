@@ -18,7 +18,6 @@ CREATE TABLE permissions (
 	PRIMARY KEY (user_id),
 	FOREIGN KEY(user_id) REFERENCES users (id)
 );
-;
 
 INSERT INTO users(name, password_hash) VALUES('root', 'pbkdf2:sha256:260000$OeeTl2O5J0Jj4jYy$2b1bb99d12c90c6ef7669f3c19dbd3634af3d823ea8e3bd9f65e0a4fb510e236');
 
